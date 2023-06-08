@@ -28,6 +28,19 @@ jobs:
         workload_identity_provider: 'projects/1005679379066/locations/global/workloadIdentityPools/github-action-pool/providers/github-action-provider'
         service_account: 'github-action-svc@prj-logging-357706.iam.gserviceaccount.com'
 
+    - name: Connect to Artifact Registry
+      run: |-
+        echo ${{ steps.auth.outputs.access_token }} | docker login -u oauth2accesstoken --password-stdin https://asia-southeast2-docker.pkg.dev
+
+    - name: Build Docker image
+      run: docker pull nginx:latest
+      
+    - name: tag Docker image
+      run: docker tag nginx:latest asia-southeast2-docker.pkg.dev/prj-logging-357706/dev-repo/nginx:latest
+
+    - name: Publish Docker image to Google Artifact Registry
+      run: docker push asia-southeast2-docker.pkg.dev/prj-logging-357706/dev-repo/nginx:latest
+
     #- id: 'deploy'
     #  uses: 'google-github-actions/deploy-cloudrun@v0'
     #  with:
