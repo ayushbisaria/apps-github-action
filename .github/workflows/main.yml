@@ -27,6 +27,10 @@ jobs:
       with:
         workload_identity_provider: 'projects/1005679379066/locations/global/workloadIdentityPools/github-action-pool/providers/github-action-provider'
         service_account: 'github-action-svc@prj-logging-357706.iam.gserviceaccount.com'
+        
+    - name: print access token
+      run: |-
+        echo ${{ steps.auth.outputs.access_token }}         
 
     - name: Connect to Artifact Registry
       run: |-
